@@ -12,7 +12,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 @Component
-public class JdbcUserDao {
+public class JdbcUserDao implements Dao{
 
     @Autowired
     private JdbcTemplate jdbcTemplate;

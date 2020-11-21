@@ -11,7 +11,7 @@ import ru.hekitos.model.User;
 import java.util.List;
 
 @Component
-public class HibernateUserDao {
+public class HibernateUserDao implements Dao{
 
     @Autowired
     private SessionFactory sessionFactory;

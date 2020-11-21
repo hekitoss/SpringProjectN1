@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Properties;
 
 @Component
-public class UserDao {
+public class UserDao implements Dao {
 
     private static Connection connection;
 
@@ -42,18 +42,25 @@ public class UserDao {
 
     }
 
-    public List<User> getAll() throws SQLException {
+    public List<User> getAll() {
         List<User>users = new ArrayList<>();
-        PreparedStatement ps = connection.prepareStatement("select * from users");
-        ResultSet rs = ps.executeQuery();
-        while (rs.next()){
-            User user = new User();
-            user.setName(rs.getString(1));
-            user.setSurname(rs.getString(2));
-            user.setEmail(rs.getString(3));
-            users.add(user);
+        PreparedStatement ps = null;
+        try {
+            ps = connection.prepareStatement("select * from users");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                User user = new User();
+                user.setName(rs.getString(1));
+                user.setSurname(rs.getString(2));
+                user.setEmail(rs.getString(3));
+                users.add(user);
+            }
+            return users;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            return null;
         }
-        return users;
+
     }
 
     public User getByEmail(String email){
