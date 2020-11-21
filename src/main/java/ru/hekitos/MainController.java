@@ -6,6 +6,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import ru.hekitos.dao.HibernateUserDao;
+import ru.hekitos.dao.JdbcUserDao;
 import ru.hekitos.dao.UserDao;
 import ru.hekitos.model.User;
 import ru.hekitos.util.UserValidator;
@@ -23,9 +25,13 @@ public class MainController {
     private UserDao userDao;
 
     @Autowired
+    private JdbcUserDao jdbcUserDao;
+
+    @Autowired
     private UserValidator userValidator;
 
-    static List<User>users=new ArrayList<>();
+    @Autowired
+    private HibernateUserDao hibernateUserDao;
 
     @GetMapping("/view/{name}")
     public String view(@PathVariable("name") String name,
@@ -36,7 +42,7 @@ public class MainController {
 
     @GetMapping("/users")
     public String getUsers(Model model) throws SQLException {
-        model.addAttribute("users",userDao.getAll());
+        model.addAttribute("users",hibernateUserDao.getAll());
         return "users";
 
     }
@@ -51,14 +57,9 @@ public class MainController {
     public String signUp(@ModelAttribute @Valid User user, BindingResult result){
         userValidator.validate(user, result);
         if(result.hasErrors()) return "/sign_up";
-        userDao.add(user);
+        hibernateUserDao.add(user);
         return "redirect:/users";
     }
 
-    static {
-        users.add(new User("Jhon","Smith","js.email.com"));
-        users.add(new User("Nik","Vas","nv.email.com"));
-
-    }
 }
 
