@@ -15,13 +15,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
 
-    public long getId() {
-        return id;
-    }
 
-    public void setId(long id) {
-        this.id = id;
-    }
 
     @NotBlank(message = "Name is required")
     private String name;
@@ -29,6 +23,8 @@ public class User {
     private String surname;
     @Email
     private String email;
+    @Size(min=7, max=20, message = "From 7 to 20 symbols")
+    private String password;
 
     public User(String name, String surname, String email) {
         this.name = name;
@@ -63,6 +59,19 @@ public class User {
         return email;
     }
 
+    public long getId() {
+        return id;
+    }
 
+    public void setId(long id) {
+        this.id = id;
+    }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }
